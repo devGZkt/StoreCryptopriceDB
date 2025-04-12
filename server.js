@@ -2,6 +2,11 @@ const cron = require('node-cron');
 const axios = require('axios');
 const connectDB = require('./db/db.js');
 const CryptoPrice = require('./schemas/cryptoPriceSchema.js');
+const { application } = require('express');
+require('dotenv').config();
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 const storeDataDB = async () => {
   console.log('Running daily task at 12:00 PM');
@@ -31,5 +36,9 @@ const storeDataDB = async () => {
     console.error('Error fetching or saving crypto data:', error.message);
   }
 };
+
+app.listen(PORT, () => {
+  console.log('Server is running on port ${PORT}');
+});
 
 cron.schedule('0 12 * * *', storeDataDB);
